@@ -13,7 +13,7 @@
 typedef float real_t;
 
 typedef struct {
-    int nx, ny, max;
+    int nx, ny;
     real_t hx, hy;
     real_t *A, *b, *y; //Ay = b
 } linsys_t;
@@ -21,9 +21,10 @@ typedef struct {
 //TODO: funções (baseadas no .c do dw)
 linsys_t* allocLinSys (unsigned int n);
 void freeLinSys (linsys_t *ls);
-linsys_t *readLinSys();
+linsys_t *readLinSys(); //?
 void printLinSys(linsys_t *ls);
 void printArray(real_t *a, unsigned int n);
+int gs_5diag(linsys_t *ls);
 
 
 #endif // __LINSYS_H__
