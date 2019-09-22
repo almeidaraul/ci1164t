@@ -11,3 +11,5 @@ A assombrosa PROVA DE ITC DA CARMEM, considerada por muitos um presságio do apo
 * [ ] Erros
 * [ ] Doxygen
 * [ ] Tempo médio GS
+* [ ] Makefile
+* [ ] Main para testes

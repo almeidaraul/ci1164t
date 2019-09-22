@@ -10,7 +10,9 @@
 #define MAXIT 100
 #define EPS 1.0e-4
 
-typedef float real_t;
+typedef double real_t;
+//for printing real_t
+#define %rt %lf
 
 typedef struct {
     int nx, ny;
@@ -19,11 +21,12 @@ typedef struct {
 } linsys_t;
 
 //TODO: funções (baseadas no .c do dw)
-linsys_t* allocLinSys (unsigned int n);
-void freeLinSys (linsys_t *ls);
-linsys_t *readLinSys(); //?
-void printLinSys(linsys_t *ls);
-void printArray(real_t *a, unsigned int n);
+linsys_t* alloc_linsys (unsigned int n);
+void free_linsys (linsys_t *ls);
+real_t *alloc_y (unsigned int nx, unsigned int ny);
+linsys_t *read_linsys(); //?
+void print_linsys(linsys_t *ls);
+void print_array(real_t *a, unsigned int n);
 int gs_5diag(linsys_t *ls);
 
 
