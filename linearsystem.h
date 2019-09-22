@@ -1,5 +1,6 @@
 #ifndef __LINSYS_H__
 #define __LINSYS_H__
+#include <math.h>
 //error values
 #define F_DIVBYZERO -1
 #define F_INEXACT -2
