@@ -1,5 +1,40 @@
 #include "linearsystem.h"
 
+
+#define pi (3.1415)
+#define ac(m, nx, i, j) *(m+nx*i+j)
+#define l (pi-0)
+#define x(j) (0+j*s->hx)
+#define y(i) (0+i*s->hy)
+
+double f(double x, double y) {
+	return (4*pi*pi*(sin(2*pi*x)*sinh(pi*y) + sin(2*pi*(pi-x))*sinh(pi*(pi-y))));
+}
+
+void init_matrix (linsys_t *s) {
+
+//inicializa matriz X
+	for (int i=0; i<s->ny; i++)
+		for (int j=0; j<s->nx; j++) {
+			if ((j==0) || (j==s->nx-1)) 
+				ac(s->y, s->nx, i, j) = 0;
+			else if (i==0)
+				ac(s->y, s->nx, i, j) = sin(2*pi*(pi-x(j)))*sinh(pi*pi);
+			else if (i==s->ny-1)
+				ac(s->y, s->nx, i, j) = sin(2*pi*x(j))*sinh(pi*pi);
+			else
+				ac(s->y, s->nx, i, j) = 0;
+		}
+	
+
+
+//inicializa matriz B
+	for (int i=0; i<s->ny; i++)
+		for (int j=0; j<s->nx; j++) {
+			ac(s->b, s->nx, i, j) = f(x(j), y(i));
+		}
+}
+
 linsys_t *alloc_linsys (unsigned int n) {
     linsys_t *ls = (linsys_t *) malloc(sizeof(linsys_t));
     ls->nx = 0;
