@@ -38,4 +38,18 @@ void print_array (real_t *a, unsigned int n) {
 }
 
 int gs_5diag(linsys_t *ls) {
+    /*
+     1 0 0 0 0 0 
+       c d e 0 0 
+       b c d e 0 
+       a b c d e  
+       0 a b c d 
+       0 0 a b c 
+       0 0 0 0 0 1 */
+    real_t *y = ls->y;
+    real_t *a = ls->A;
+    real_t *b = ls->b;
+    y[at(0, 0)] = b[0];
+    //meio
+    y[at(ls->nx, ls->ny)] = b[ls->ny];
 }

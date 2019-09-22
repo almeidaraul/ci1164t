@@ -9,6 +9,8 @@
 //convergence tests
 #define MAXIT 100
 #define EPS 1.0e-4
+//indexing
+#define at(row, col) row*ls->nx + col
 
 typedef double real_t;
 //for printing real_t
@@ -16,7 +18,7 @@ typedef double real_t;
 
 typedef struct {
     int nx, ny;
-    real_t hx, hy;
+    real_t hx, hy, x0, y0, xn, yn;
     real_t *A, *b, *y; //Ay = b
 } linsys_t;
 
