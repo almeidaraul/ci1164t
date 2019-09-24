@@ -1,6 +1,9 @@
 #ifndef __LINSYS_H__
 #define __LINSYS_H__
-#include <math.h>
+//constants
+#define _PI 3.14159265358979323846
+#define PI_SQUARED 9.869604401089358
+#define SINH_PS 9666.84451132098 //sinh(PI_SQUARED)
 //error values
 #define F_DIVBYZERO -1
 #define F_INEXACT -2
@@ -19,16 +22,14 @@ typedef double real_t;
 
 typedef struct {
     int nx, ny;
-    real_t hx, hy, x0, y0, xn, yn;
-    real_t *A, *b, *y; //Ay = b
+    real_t hx, hy, x0, y0, xN, yN;
+    real_t *u; 
 } linsys_t;
 
-//TODO: funções (baseadas no .c do dw)
+real_t f(real_t x, real_t y);
+void init_linsys(linsys_t *s);
 linsys_t* alloc_linsys (unsigned int n);
 void free_linsys (linsys_t *ls);
-real_t *alloc_y (unsigned int nx, unsigned int ny);
-linsys_t *read_linsys(); //?
-void print_linsys(linsys_t *ls);
 void print_array(real_t *a, unsigned int n);
 int gs_5diag(linsys_t *ls);
 

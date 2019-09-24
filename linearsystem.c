@@ -1,14 +1,13 @@
 #include "linearsystem.h"
 
-
 #define ac(m, nx, i, j) *(m+nx*i+j)
-#define l (M_PI-0)
+#define l (_PI-0)
 #define x(j) (0+j*s->hx)
 #define y(i) (0+i*s->hy)
 
 real_t f(real_t x, real_t y) {
-	return (4*M_PI*M_PI*(sin(2*M_PI*x)*sinh(M_PI*y) + 
-                sin(2*M_PI*(M_PI-x))*sinh(M_PI*(M_PI-y))));
+	return (4*_PI*_PI*(sin(2*_PI*x)*sinh(_PI*y) + 
+                sin(2*_PI*(_PI-x))*sinh(_PI*(_PI-y))));
 }
 
 void init_linsys (linsys_t *s) {
@@ -19,10 +18,10 @@ void init_linsys (linsys_t *s) {
 				ac(s->y, s->nx, i, j) = 0;
 			else if (i==0)
 				ac(s->y, s->nx, i, j) = 
-                    sin(2*M_PI*(M_PI-x(j)))*sinh(M_PI*M_PI);
+                    sin(2*_PI*(_PI-x(j)))*sinh(_PI*_PI);
 			else if (i==s->ny-1)
 				ac(s->y, s->nx, i, j) = 
-                    sin(2*M_PI*x(j))*sinh(M_PI*M_PI);
+                    sin(2*_PI*x(j))*sinh(_PI*_PI);
 			else
 				ac(s->y, s->nx, i, j) = 0;
 		}
@@ -32,37 +31,21 @@ void init_linsys (linsys_t *s) {
 			ac(s->b, s->nx, i, j) = f(x(j), y(i));
 }
 
-linsys_t *alloc_linsys (unsigned int n) {
+linsys_t *alloc_linsys (int num_x, int num_y) {
     linsys_t *ls = (linsys_t *) malloc(sizeof(linsys_t));
-    ls->nx = 0;
-    ls->ny = 0;
+    ls->nx = num_x;
+    ls->ny = num_y;
     ls->hx = 0;
     ls->hy = 0;
-    ls->A = (real_t *) malloc(n*n*sizeof(real_t));
-    ls->b = (real_t *) malloc(n*sizeof(real_t));
-    ls->y = (real_t *) malloc(n*sizeof(real_t));
+    ls->y = (real_t *) malloc(num_x*num_y*sizeof(real_t));
     return ls;
 }
 
 void free_linsys (linsys_t *ls) {
-    free(ls->A);
-    free(ls->b);
-    free(ls->y);
+    free(ls->u);
     free(ls);
 }
 
-real_t *alloc_y (unsigned int nx, unsigned int ny) {
-    return (real_t *) malloc(nx*ny*sizeof(real_t));
-}
-
-void print_linsys (linsys_t *ls) {
-   printf("A | b\n");
-   for (int row = 0; row < ls->ny; row++) {
-       for (int col = 0; col < ls->nx; col++)
-           printf("%rt ", ls->A[row][col]);
-       printf("| %rt\n", ls->b[row]);
-   }
-}
 void print_array (real_t *a, unsigned int n) {
     for(int i = 0; i < n; i++)
         printf("%rt ", a[i]);
@@ -70,18 +53,23 @@ void print_array (real_t *a, unsigned int n) {
 }
 
 int gs_5diag(linsys_t *ls) {
-    /*
-     1 0 0 0 0 0 
-       c d e 0 0 
-       b c d e 0 
-       a b c d e  
-       0 a b c d 
-       0 0 a b c 
-       0 0 0 0 0 1 */
-    real_t *y = ls->y;
-    real_t *a = ls->A;
-    real_t *b = ls->b;
-    y[at(0, 0)] = b[0];
-    //meio
-    y[at(ls->nx, ls->ny)] = b[ls->ny];
+    real_t xi, yj, hy = ls->hy, hx = ls->hx;
+    unsigned int i, j;
+    //inserir constantes de instancia e while
+    //(abaixo, código de uma iteração)
+    for(i = 1; i < ls->nx; i++)
+        for(j = 1; j < ls->ny; j++) {
+            xi = i*ls->x0*ls->hx;
+            yi = j*ls->y0*ls->hy;
+            ls->y = //the N word
+                (2*hx*SQR(xi)*hy*SQR(yj)*f(xi, yj) 
+                 + ls->u[AT(i+1, j)]*(2*hy*SQR(yj)-hx*xi*hy*SQR(yj))
+                 + ls->u[AT(i-1, j)]*(2*hy*SQR(yj)+hx*xi*hy*SQR(yj))
+                 + ls->u[AT(i, j+1)]*(2*hx*SQR(xi)-hx*SQR(xi)*hy*yj)
+                 + ls->u[AT(i, j-1)]*(2*hx*SQR(xi)+hx*SQR(xi)*hy*yj))
+                 /(4*hy*SQR(yj)
+                         +4*hx*SQR(xi)
+                         +8*PI_SQUARED*hx*SQR(xi)*hy*SQR(yj)
+                  )
+        }
 }
