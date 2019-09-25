@@ -35,8 +35,8 @@ linsys_t *alloc_linsys (int num_x, int num_y) {
     linsys_t *ls = (linsys_t *) malloc(sizeof(linsys_t));
     ls->nx = num_x;
     ls->ny = num_y;
-    ls->hx = 0;
-    ls->hy = 0;
+    ls->hx = l/(ls->nx-1);
+    ls->hy = l/(ls->ny-1);
     ls->y = (real_t *) malloc(num_x*num_y*sizeof(real_t));
     return ls;
 }
