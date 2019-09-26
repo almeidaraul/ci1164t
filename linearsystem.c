@@ -54,22 +54,22 @@ void print_array (real_t *a, unsigned int n) {
 
 int gs_5diag(linsys_t *ls) {
     real_t xi, yj, hy = ls->hy, hx = ls->hx;
-    unsigned int i, j;
-    //inserir constantes de instancia e while
-    //(abaixo, código de uma iteração)
-    for(i = 1; i < ls->nx; i++)
-        for(j = 1; j < ls->ny; j++) {
-            xi = i*ls->x0*ls->hx;
-            yi = j*ls->y0*ls->hy;
-            ls->y = //the N word
-                (2*hx*SQR(xi)*hy*SQR(yj)*f(xi, yj) 
-                 + ls->u[AT(i+1, j)]*(2*hy*SQR(yj)-hx*xi*hy*SQR(yj))
-                 + ls->u[AT(i-1, j)]*(2*hy*SQR(yj)+hx*xi*hy*SQR(yj))
-                 + ls->u[AT(i, j+1)]*(2*hx*SQR(xi)-hx*SQR(xi)*hy*yj)
-                 + ls->u[AT(i, j-1)]*(2*hx*SQR(xi)+hx*SQR(xi)*hy*yj))
-                 /(4*hy*SQR(yj)
-                         +4*hx*SQR(xi)
-                         +8*PI_SQUARED*hx*SQR(xi)*hy*SQR(yj)
-                  )
-        }
+    unsigned int i, j, it;
+    for (it = 0; it < MAXIT; it++) {
+        for(i = 1; i < ls->nx; i++)
+            for(j = 1; j < ls->ny; j++) {
+                xi = i*ls->x0*ls->hx;
+                yi = j*ls->y0*ls->hy;
+                ls->y = //the N word
+                    (2*hx*SQR(xi)*hy*SQR(yj)*f(xi, yj) 
+                     + ls->u[AT(i+1, j)]*(2*hy*SQR(yj)-hx*xi*hy*SQR(yj))
+                     + ls->u[AT(i-1, j)]*(2*hy*SQR(yj)+hx*xi*hy*SQR(yj))
+                     + ls->u[AT(i, j+1)]*(2*hx*SQR(xi)-hx*SQR(xi)*hy*yj)
+                     + ls->u[AT(i, j-1)]*(2*hx*SQR(xi)+hx*SQR(xi)*hy*yj))
+                     /(4*hy*SQR(yj)
+                             +4*hx*SQR(xi)
+                             +8*PI_SQUARED*hx*SQR(xi)*hy*SQR(yj)
+                      )
+            }
+    }
 }
