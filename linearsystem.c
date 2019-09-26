@@ -58,8 +58,8 @@ int gs_5diag(linsys_t *ls) {
     for (it = 0; it < MAXIT; it++) {
         for(i = 1; i < ls->nx; i++)
             for(j = 1; j < ls->ny; j++) {
-                xi = i*ls->x0*ls->hx;
-                yi = j*ls->y0*ls->hy;
+                xi = ls->x0 + i*ls->hx;
+                yi = ls->y0 + j*ls->hy;
                 ls->y = //the N word
                     (2*hx*SQR(xi)*hy*SQR(yj)*f(xi, yj) 
                      + ls->u[AT(i+1, j)]*(2*hy*SQR(yj)-hx*xi*hy*SQR(yj))
@@ -72,4 +72,5 @@ int gs_5diag(linsys_t *ls) {
                       )
             }
     }
+    return 0;
 }
