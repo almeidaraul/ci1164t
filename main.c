@@ -1,5 +1,5 @@
 #include "linearsystem.h"
-#include "getinput.h"
+#include "getio.h"
 #include "errors.h"
 
 int main(int argc, char **argv) {

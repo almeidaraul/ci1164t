@@ -5,7 +5,7 @@ Fugindo da LISTA DE ANÁLISE, uma dupla de estudantes, RAUL ALMEIDA e ARTHUR MAR
 A assombrosa PROVA DE ITC DA CARMEM, considerada por muitos um presságio do apocalipse, se aproxima...  
 
 ## Coisas a fazer
-* [ ] Entrada
+* [X] Entrada
 * [ ] Saída
 * [ ] Gauss-Seidel
 * [ ] Erros
@@ -13,3 +13,5 @@ A assombrosa PROVA DE ITC DA CARMEM, considerada por muitos um presságio do apo
 * [ ] Tempo médio GS
 * [ ] Makefile
 * [ ] Main para testes
+* [ ] Editar equação que eu não enxerguei direito na foto
+* [ ] Temos duas macros para indexação, pelo que vi
