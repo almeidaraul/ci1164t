@@ -28,7 +28,7 @@ void init_linsys (linsys_t *s) {
     //inicializa matriz B
 	for (int i=0; i<s->ny; i++)
 		for (int j=0; j<s->nx; j++) 
-			ac(s->b, s->nx, i, j) = f(x(j), y(i));
+			ac(s->b, s->nx, i, j) = 2*hx*hx*hy*hy*f(x(j), y(i));
 }
 
 linsys_t *alloc_linsys (int num_x, int num_y) {
@@ -56,21 +56,39 @@ int gs_5diag(linsys_t *ls) {
     real_t xi, yj, hy = ls->hy, hx = ls->hx;
     unsigned int i, j, it;
     for (it = 0; it < MAXIT; it++) {
-        for(i = 1; i < ls->nx; i++)
-            for(j = 1; j < ls->ny; j++) {
+        for(i = 1; i < ls->nx-1; i++)				//talvez nx-1? (borda direita)
+            for(j = 1; j < ls->ny-1; j++) {			//idem
                 xi = ls->x0 + i*ls->hx;
                 yi = ls->y0 + j*ls->hy;
-                ls->y = //the N word
-                    (2*hx*SQR(xi)*hy*SQR(yj)*f(xi, yj) 
-                     + ls->u[AT(i+1, j)]*(2*hy*SQR(yj)-hx*xi*hy*SQR(yj))
-                     + ls->u[AT(i-1, j)]*(2*hy*SQR(yj)+hx*xi*hy*SQR(yj))
-                     + ls->u[AT(i, j+1)]*(2*hx*SQR(xi)-hx*SQR(xi)*hy*yj)
-                     + ls->u[AT(i, j-1)]*(2*hx*SQR(xi)+hx*SQR(xi)*hy*yj))
-                     /(4*hy*SQR(yj)
-                             +4*hx*SQR(xi)
-                             +8*PI_SQUARED*hx*SQR(xi)*hy*SQR(yj)
-                      )
+                ls->u[AT(i, j)] = //the N word
+                    (ls->b[AT(i, j)] 
+                     + ls->u[AT(i+1, j)]*(2*hy*hy-hx*hy*hy)
+                     + ls->u[AT(i-1, j)]*(2*hy*hy+hx*hy*hy)
+                     + ls->u[AT(i, j+1)]*(2*hx*hx-hx*hx*hy)
+                     + ls->u[AT(i, j-1)]*(2*hx*hx+hx*hx*hy))
+                     /(4*hy*hy
+                             +4*hx*hx
+                             +8*PI_SQUARED*hx*hx*hy*hy
+                      );
             }
     }
     return 0;
+}
+
+
+double residuo (linsys_t *ls) {
+
+	double r = 0, aux;
+
+	for(i = 1; i < ls->nx-1; i++)				//talvez nx-1? (borda direita)
+		for(j = 1; j < ls->ny-1; j++) {			//idem
+			aux = ls->b[AT(i, j)] 
+                    + ls->u[AT(i+1, j)]*(2*hy*hy-hx*hy*hy)
+                    + ls->u[AT(i-1, j)]*(2*hy*hy+hx*hy*hy)
+                    + ls->u[AT(i, j+1)]*(2*hx*hx-hx*hx*hy)
+                    + ls->u[AT(i, j-1)]*(2*hx*hx+hx*hx*hy)
+					- ls->u[AT(i, j)]*(4*hy*hy + 4*hx*hx + 8*PI_SQUARED*hx*hx*hy*hy;
+			r += aux*aux;
+		}
+	return sqrt(r);
 }
