@@ -23,10 +23,10 @@ typedef double real_t;
 #define %rt %lf
 
 typedef struct {
-    int nx, ny;
-    real_t hx, hy, x0, y0, xN, yN;
-    real_t *u; 
-    double avg_time;
+	int nx, ny;
+	real_t hx, hy, x0, y0, xN, yN;
+	real_t *u; 
+	double avg_time;
 } linsys_t;
 
 real_t f(real_t x, real_t y);

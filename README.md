@@ -15,3 +15,6 @@ A assombrosa PROVA DE ITC DA CARMEM, considerada por muitos um presságio do apo
 * [ ] Main para testes
 * [ ] Editar equação que eu não enxerguei direito na foto
 * [ ] Temos duas macros para indexação, pelo que vi
+* [ ] Mudar alguns defines pra fora do linearsystem.h (tem coisa que deveria estar em errors.h)
+* [ ] Verificar se estamos repetindo includes (tem um include stdlib.h repetido que eu sei)
+* [ ] Existem defines dentro do linearsystem.c. Mover para um .h
