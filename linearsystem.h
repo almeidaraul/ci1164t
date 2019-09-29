@@ -25,7 +25,7 @@ typedef double real_t;
 typedef struct {
 	int nx, ny;
 	real_t hx, hy, x0, y0, xN, yN;
-	real_t *u; 
+	real_t *u, *b, *resid; 
 	double avg_time;
 } linsys_t;
 

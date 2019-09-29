@@ -46,10 +46,15 @@ void parse_input (int argc, char **argv, int *nx, int *ny, int *maxit, FILE *out
  * \param output Arquivo de saída
  * \param ls Ponteiro para a estrutura do sistema linear resolvido
  */
-void output_dat (FILE *output, linsys_t *ls) {
+void output_dat (FILE *output, linsys_t *ls, int maxit) {
 	real_t xit, yit;
 	fprintf(output, "###########\n");
 	fprintf(output, "# Tempo Médio GS: %lf\n", ls->avg_time);
+	fprintf(output, "#\n# Norma L2 do Resíduo\n");
+
+	for (int it=0; it < maxit; it++)
+		fprintf(output, "# i=%d: %rt\n", it+1, ls->resid[it]);
+
 	fprintf(output, "###########\n");
 	for (int x = 0; x < ls->nx; x++)
 		for (int y = 0; y < ls->ny; y++) {

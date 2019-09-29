@@ -46,18 +46,22 @@ void init_linsys (linsys_t *s) {
  * \param num_y Númro de pontos nas ordenadas
  * \return Ponteiro para o sistema linear alocado
  */
-linsys_t *alloc_linsys (int num_x, int num_y) {
+linsys_t *alloc_linsys (int num_x, int num_y, int maxit) {
 	linsys_t *ls = (linsys_t *) malloc(sizeof(linsys_t));
 	ls->nx = num_x;
 	ls->ny = num_y;
 	ls->hx = l/(ls->nx-1);
 	ls->hy = l/(ls->ny-1);
-	ls->y = (real_t *) malloc(num_x*num_y*sizeof(real_t));
+	ls->u = (real_t *) malloc(num_x*num_y*sizeof(real_t));
+	ls->b = (real_t *) malloc(num_x*num_y*sizeof(real_t));
+	ls->resid = (real_t *) malloc(maxit*(real_t));
 	return ls;
 }
 
 void free_linsys (linsys_t *ls) {
 	free(ls->u);
+	free(ls->b);
+	free(ls->resid);
 	free(ls);
 }
 
@@ -89,15 +93,16 @@ int gs_5diag(linsys_t *ls) {
 					  );
 			}
 		time_sum += timestamp() - start_time;
+		ls->resid[it] = residuo(ls);
 	}
 	ls->avg_time = time_sum/MAXIT;
 	return 0;
 }
 
 
-double residuo (linsys_t *ls) {
+real_t residuo (linsys_t *ls) {
 
-	double r = 0, aux;
+	real_t r = 0, aux;
 
 	for(i = 1; i < ls->nx-1; i++)				//talvez nx-1? (borda direita)
 		for(j = 1; j < ls->ny-1; j++) {			//idem
