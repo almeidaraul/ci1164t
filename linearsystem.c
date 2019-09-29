@@ -55,7 +55,9 @@ void print_array (real_t *a, unsigned int n) {
 int gs_5diag(linsys_t *ls) {
     real_t xi, yj, hy = ls->hy, hx = ls->hx;
     unsigned int i, j, it;
+    double start_time, time_sum = 0.0;
     for (it = 0; it < MAXIT; it++) {
+        start_time = timestamp();
         for(i = 1; i < ls->nx-1; i++)				//talvez nx-1? (borda direita)
             for(j = 1; j < ls->ny-1; j++) {			//idem
                 xi = ls->x0 + i*ls->hx;
@@ -71,7 +73,9 @@ int gs_5diag(linsys_t *ls) {
                              +8*PI_SQUARED*hx*hx*hy*hy
                       );
             }
+        time_sum += timestamp() - start_time;
     }
+    ls->avg_time = time_sum/MAXIT;
     return 0;
 }
 

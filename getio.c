@@ -18,13 +18,15 @@ void parse_input (int argc, char **argv, int *nx, int *ny, int *maxit, FILE *out
     }
 }
 
-void output_dat (real_t hx, real_t hy, real_t x0, real_t y0, real_t *u, int nx, int ny, FILE *output) {
+void output_dat (FILE *output, linsys_t *ls) {
     real_t xit, yit;
-    fprintf(output, "# X Y U\n");
-    for (int x = 0; x < nx; x++)
-        for (int y = 0; y < ny; y++) {
-            xit = x0 + hx*x;
-            yit = y0 + hy*y;
-            fprintf(output, "%rt %rt %rt\n", xit, yit, u[at(x, y)]);
+    fprintf(output, "###########\n");
+    fprintf(output, "# Tempo Médio GS: %lf\n", ls->avg_time);
+    fprintf(output, "###########\n");
+    for (int x = 0; x < ls->nx; x++)
+        for (int y = 0; y < ls->ny; y++) {
+            xit = ls->x0 + ls->hx*x;
+            yit = ls->y0 + ls->hy*y;
+            fprintf(output, "%rt %rt %rt\n", xit, yit, ls->u[at(x, y)]);
         }
 }

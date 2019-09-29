@@ -1,6 +1,7 @@
 #ifndef __LINSYS_H__
 #define __LINSYS_H__
 #include <stdlib.h>
+#include "utils.h"
 //constants
 #define _PI 3.14159265358979323846
 #define PI_SQUARED 9.869604401089358
@@ -25,6 +26,7 @@ typedef struct {
     int nx, ny;
     real_t hx, hy, x0, y0, xN, yN;
     real_t *u; 
+    double avg_time;
 } linsys_t;
 
 real_t f(real_t x, real_t y);
@@ -33,6 +35,5 @@ linsys_t* alloc_linsys (int num_x, int num_y);
 void free_linsys (linsys_t *ls);
 void print_array(real_t *a, unsigned int n);
 int gs_5diag(linsys_t *ls);
-
 
 #endif // __LINSYS_H__
