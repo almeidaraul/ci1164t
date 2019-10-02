@@ -1,3 +1,8 @@
+/*!
+ * \file linearsystem.h
+ *
+ * Definições para linearsystem.c
+ */
 #ifndef __LINSYS_H__
 #define __LINSYS_H__
 #include <stdlib.h>

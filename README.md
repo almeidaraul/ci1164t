@@ -18,4 +18,5 @@ A assombrosa PROVA DE ITC DA CARMEM, considerada por muitos um presságio do apo
 * [X] Verificar se estamos repetindo includes (tem um include stdlib.h repetido que eu sei)
 * [X] Existem defines dentro do linearsystem.c. Mover para um .h
 * [X] colocar FILE * output na struct do ls
-* [ ] corrigir flags //errado
+* [X] corrigir flags //errado
+* [ ] Documentar: coloquei ERRADO e FALTANDO nas coisas a serem feitas

@@ -1,3 +1,8 @@
+/*!
+ * \file main.c
+ *
+ * Programa principal; interface entre as funções
+ */
 #include "linearsystem.h"
 #include "getio.h"
 #include "errors.h"

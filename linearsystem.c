@@ -4,11 +4,21 @@
  */
 #include "linearsystem.h"
 
+/*!
+ * \brief FALTANDO
+ *
+ * \param 
+ */
 real_t f(real_t x, real_t y) {
 	return (4*_PI*_PI*(sin(2*_PI*x)*sinh(_PI*y) + 
 				sin(2*_PI*(_PI-x))*sinh(_PI*(_PI-y))));
 }
 
+/*!
+ * \brief FALTANDO
+ *
+ * \param
+ */
 void init_linsys (linsys_t *ls, int num_x, int num_y, int maxit, FILE *out) {
 	ls->maxit = maxit;
 	ls->nx = num_x;
@@ -40,6 +50,11 @@ void init_linsys (linsys_t *ls, int num_x, int num_y, int maxit, FILE *out) {
 			ls->b[AT(i, j)] = 2*hx*hx*hy*hy*f(x(j), y(i));
 }
 
+/*!
+ * \brief Aloca espaço para um sistema linear na memória
+ *
+ * \return ls Ponteiro para estrutura com espaço alocado
+ */
 linsys_t *alloc_linsys () {
 	linsys_t *ls = (linsys_t *) malloc(sizeof(linsys_t));
 	ls->u = (real_t *) malloc(ls->nx*ls->ny*sizeof(real_t));
@@ -48,6 +63,11 @@ linsys_t *alloc_linsys () {
 	return ls;
 }
 
+/*!
+ * \brief Libera o espaço de um sistema linear na memória
+ *
+ * \param ls Ponteiro para o sistema a ser limpo
+ */
 void free_linsys (linsys_t *ls) {
 	free(ls->u);
 	free(ls->b);
@@ -56,6 +76,12 @@ void free_linsys (linsys_t *ls) {
 }
 
 
+/*!
+ * \brief FALTANDO
+ *
+ * \param
+ * \return
+ */
 real_t residuo (linsys_t *ls) {
 
 	real_t r = 0, aux, hx, hy;
@@ -75,6 +101,14 @@ real_t residuo (linsys_t *ls) {
 	return sqrt(r);
 }
 
+/*!
+ * \brief Aplica o método de Gauss-Seidel para resolução de um dado sistema
+ *
+ * Aplica o Gauss-Seidel pentadiagonal em uma estrutura de sistema linear dada
+ *
+ * \param ls Ponteiro para o sistema linear a ser resolvido
+ * \return estado 0 ou código de erro
+ */
 int gs_5diag(linsys_t *ls) {
 	real_t xi, yi, hy, hx; 
 	hy = ls->hy;

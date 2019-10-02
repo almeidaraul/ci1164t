@@ -1,5 +1,15 @@
+/*!
+ * \file utils.c
+ * 
+ * Utilidades que não se encaixam em categorias específicas
+ */
 #include "utils.h"
 
+/*!
+ * \brief Computa tempo real em que foi chamada
+ *
+ * \return Tempo computado
+ */
 double timestamp (void) {
 	struct timeval tp;
 	gettimeofday(&tp, NULL);
