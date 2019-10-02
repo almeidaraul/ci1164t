@@ -10,8 +10,8 @@ A assombrosa PROVA DE ITC DA CARMEM, considerada por muitos um presságio do apo
 * [X] Erros
 * [ ] Doxygen
 * [X] Tempo médio GS
-* [ ] Makefile
-* [ ] Main para testes
+* [X] Makefile
+* [X] Main para testes
 * [X] Editar equação que eu não enxerguei direito na foto
 * [X] Temos duas macros para indexação, pelo que vi
 * [X] Mudar alguns defines pra fora do linearsystem.h (tem coisa que deveria estar em errors.h)

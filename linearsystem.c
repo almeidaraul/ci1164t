@@ -10,12 +10,11 @@ real_t f(real_t x, real_t y) {
 }
 
 void init_linsys (linsys_t *ls, int num_x, int num_y, int maxit, FILE *out) {
-	//raul adicionou isso aqui
 	ls->maxit = maxit;
 	ls->nx = num_x;
 	ls->ny = num_y;
-	ls->hx = l/(ls->nx-1); //errado
-	ls->hy = l/(ls->ny-1); //errado
+	ls->hx = (ls->xN - ls->x0)/(ls->nx-1); //errado
+	ls->hy = (ls->yN - ls->y0)/(ls->ny-1); //errado
 	ls->output = out;
 
 	real_t hx, hy;

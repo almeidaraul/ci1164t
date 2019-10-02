@@ -1,12 +1,13 @@
 CC=gcc
 CFLAGS = -lm
 OBJ= errors.o linearsystem.o utils.o getio.o main.o
+test: clean all
+	./pdeSolver
 all: $(OBJ) #compila, produz um executável chamado pdeSolver
 	$(CC) -o pdeSolver $^ $(CFLAGS)
 clean: #remove temporários e outros do makefile
-	rm *.o *.out
+	if ls *.o > /dev/null 2>&1; then rm *.o; fi
 doc: #gera documentação doxygen em html
 	doxygen doxyfile
-# fazer uma makefile bonita depois
 %.o: %.c %.h
 	$(CC) -c -o $@ $< $(CFLAGS)
