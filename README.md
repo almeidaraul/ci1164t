@@ -8,7 +8,7 @@ A assombrosa PROVA DE ITC DA CARMEM, considerada por muitos um presságio do apo
 * [X] Saída
 * [X] Gauss-Seidel
 * [X] Erros
-* [ ] Doxygen
+* [X] Doxygen
 * [X] Tempo médio GS
 * [X] Makefile
 * [X] Main para testes
