@@ -1,39 +1,34 @@
 #ifndef __LINSYS_H__
 #define __LINSYS_H__
 #include <stdlib.h>
+#include <stdio.h>
 #include "utils.h"
 //constants
 #define _PI 3.14159265358979323846
 #define PI_SQUARED 9.869604401089358
 #define SINH_PS 9666.84451132098 //sinh(PI_SQUARED)
-//error values
-#define F_DIVBYZERO -1
-#define F_INEXACT -2
-#define F_INVALID -4
-#define F_OVERFLOW -8
-#define F_UNDERFLOW -16
 //convergence tests
-//#define MAXIT 100
 #define EPS 1.0e-4
 //indexing
 #define AT(row, col) row*ls->nx + col
+#define l (_PI-0)
+#define x(j) (0+j*hx)
+#define y(i) (0+i*hy)
 
 typedef double real_t;
-//for printing real_t
-#define rt %lf
 
 typedef struct {
 	int nx, ny, maxit;
 	real_t hx, hy, x0, y0, xN, yN;
 	real_t *u, *b, *resid; 
 	double avg_time;
+	FILE *output;
 } linsys_t;
 
 real_t f(real_t x, real_t y);
-void init_linsys(linsys_t *s);
-linsys_t* alloc_linsys (int num_x, int num_y, int maxit);
+void init_linsys(linsys_t *ls, int num_x, int num_y, int maxit, FILE *out);
+linsys_t* alloc_linsys ();
 void free_linsys (linsys_t *ls);
-void print_array(real_t *a, unsigned int n);
 int gs_5diag(linsys_t *ls);
 
 #endif // __LINSYS_H__

@@ -1,21 +1,23 @@
 /*!
- * \file linearsystem.c
- *
+ * \file linearsystem.c *
  * Funções que tratam diretamente do sistema linear
  */
 #include "linearsystem.h"
-
-//#define ac(m, nx, i, j) *(m+nx*i+j)
-#define l (_PI-0)
-#define x(j) (0+j*hx)
-#define y(i) (0+i*hy)
 
 real_t f(real_t x, real_t y) {
 	return (4*_PI*_PI*(sin(2*_PI*x)*sinh(_PI*y) + 
 				sin(2*_PI*(_PI-x))*sinh(_PI*(_PI-y))));
 }
 
-void init_linsys (linsys_t *ls) {
+void init_linsys (linsys_t *ls, int num_x, int num_y, int maxit, FILE *out) {
+	//raul adicionou isso aqui
+	ls->maxit = maxit;
+	ls->nx = num_x;
+	ls->ny = num_y;
+	ls->hx = l/(ls->nx-1); //errado
+	ls->hy = l/(ls->ny-1); //errado
+	ls->output = out;
+
 	real_t hx, hy;
 	hx = ls->hx;
 	hy = ls->hy;
@@ -39,25 +41,10 @@ void init_linsys (linsys_t *ls) {
 			ls->b[AT(i, j)] = 2*hx*hx*hy*hy*f(x(j), y(i));
 }
 
-/*!
- * \brief Aloca espaço para um sistema linear na memória
- *
- * Aloca espaço para a estrutura do sistema linear e para estruturas internas
- * registradas por ponteiros
- *
- * \param num_x Número de pontos nas abscissas
- * \param num_y Númro de pontos nas ordenadas
- * \return Ponteiro para o sistema linear alocado
- */
-linsys_t *alloc_linsys (int num_x, int num_y, int maxit) {
+linsys_t *alloc_linsys () {
 	linsys_t *ls = (linsys_t *) malloc(sizeof(linsys_t));
-	ls->maxit = maxit;
-	ls->nx = num_x;
-	ls->ny = num_y;
-	ls->hx = l/(ls->nx-1);
-	ls->hy = l/(ls->ny-1);
-	ls->u = (real_t *) malloc(num_x*num_y*sizeof(real_t));
-	ls->b = (real_t *) malloc(num_x*num_y*sizeof(real_t));
+	ls->u = (real_t *) malloc(ls->nx*ls->ny*sizeof(real_t));
+	ls->b = (real_t *) malloc(ls->nx*ls->ny*sizeof(real_t));
 	ls->resid = (real_t *) malloc(ls->maxit*sizeof(real_t));
 	return ls;
 }
@@ -69,11 +56,6 @@ void free_linsys (linsys_t *ls) {
 	free(ls);
 }
 
-void print_array (real_t *a, unsigned int n) {
-	for(int i = 0; i < n; i++)
-		printf("%lf ", a[i]);
-	printf("\n");
-}
 
 real_t residuo (linsys_t *ls) {
 
