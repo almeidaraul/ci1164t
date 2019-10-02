@@ -13,17 +13,17 @@
 #define F_OVERFLOW -8
 #define F_UNDERFLOW -16
 //convergence tests
-#define MAXIT 100
+//#define MAXIT 100
 #define EPS 1.0e-4
 //indexing
-#define at(row, col) row*ls->nx + col
+#define AT(row, col) row*ls->nx + col
 
 typedef double real_t;
 //for printing real_t
-#define %rt %lf
+#define rt %lf
 
 typedef struct {
-	int nx, ny;
+	int nx, ny, maxit;
 	real_t hx, hy, x0, y0, xN, yN;
 	real_t *u, *b, *resid; 
 	double avg_time;
@@ -31,7 +31,7 @@ typedef struct {
 
 real_t f(real_t x, real_t y);
 void init_linsys(linsys_t *s);
-linsys_t* alloc_linsys (int num_x, int num_y);
+linsys_t* alloc_linsys (int num_x, int num_y, int maxit);
 void free_linsys (linsys_t *ls);
 void print_array(real_t *a, unsigned int n);
 int gs_5diag(linsys_t *ls);

@@ -22,13 +22,13 @@ void parse_input (int argc, char **argv, int *nx, int *ny, int *maxit, FILE *out
 	output = stdout;
 	for (int i = 0; i < argc; i++) {
 		if (!(strcmp(argv[i], "-i"))) {
-			maxit = atoi(argv[i+1]); 
+			*maxit = atoi(argv[i+1]); 
 		}
 		else if (!(strcmp(argv[i], "-nx"))) {
-			nx = atoi(argv[i+1]);
+			*nx = atoi(argv[i+1]);
 		}
 		else if (!(strcmp(argv[i], "-ny"))) {
-			ny = atoi(argv[i+1]);
+			*ny = atoi(argv[i+1]);
 		}
 		else if (!(strcmp(argv[i], "-o"))) {
 			output = fopen(argv[i+1], "w");
@@ -46,20 +46,20 @@ void parse_input (int argc, char **argv, int *nx, int *ny, int *maxit, FILE *out
  * \param output Arquivo de saída
  * \param ls Ponteiro para a estrutura do sistema linear resolvido
  */
-void output_dat (FILE *output, linsys_t *ls, int maxit) {
+void output_dat (FILE *output, linsys_t *ls) {
 	real_t xit, yit;
 	fprintf(output, "###########\n");
 	fprintf(output, "# Tempo Médio GS: %lf\n", ls->avg_time);
 	fprintf(output, "#\n# Norma L2 do Resíduo\n");
 
-	for (int it=0; it < maxit; it++)
-		fprintf(output, "# i=%d: %rt\n", it+1, ls->resid[it]);
+	for (int it=0; it < ls->maxit; it++)
+		fprintf(output, "# i=%d: %lf\n", it+1, ls->resid[it]);
 
 	fprintf(output, "###########\n");
 	for (int x = 0; x < ls->nx; x++)
 		for (int y = 0; y < ls->ny; y++) {
 			xit = ls->x0 + ls->hx*x;
 			yit = ls->y0 + ls->hy*y;
-			fprintf(output, "%rt %rt %rt\n", xit, yit, ls->u[at(x, y)]);
+			fprintf(output, "%lf %lf %lf\n", xit, yit, ls->u[AT(x, y)]);
 		}
 }
