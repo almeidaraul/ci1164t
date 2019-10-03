@@ -11,7 +11,8 @@
  * \param errnum Código do erro recebido
  */
 void print_error (int errnum) {
-	fprintf(stderr, "Execution found error ");
+	if (errnum != 0)
+		fprintf(stderr, "Execution found error ");
 	switch (errnum) {
 		case (F_DIVBYZERO):
 			fprintf(stderr, "F_DIVBYZERO\n  Float division by zero\n");

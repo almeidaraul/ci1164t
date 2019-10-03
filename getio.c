@@ -48,7 +48,12 @@ void parse_input (int argc, char **argv, int *nx, int *ny, int *maxit, FILE *out
  * \param ls Estrutura do sistema linear
  */
 void output_dat (linsys_t *ls) {
+
+	printf("yay5\n");
+	printf("FILE = %p\n", ls->output);
+
 	real_t xit, yit;
+
 	fprintf(ls->output, "###########\n");
 	fprintf(ls->output, "# Tempo Médio GS: %lf\n", ls->avg_time);
 	fprintf(ls->output, "#\n# Norma L2 do Resíduo\n");
@@ -63,6 +68,9 @@ void output_dat (linsys_t *ls) {
 			yit = ls->y0 + ls->hy*y;
 			fprintf(ls->output, "%lf %lf %lf\n", xit, yit, ls->u[AT(x, y)]);
 		}
+	printf("yay5.5\n");
+	fclose(ls->output);
+	printf("yay6\n");
 }
 
 /*!

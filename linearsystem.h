@@ -15,7 +15,7 @@
 //convergence tests
 #define EPS 1.0e-4
 //indexing
-#define AT(row, col) row*ls->nx + col
+#define AT(row, col) (row)*ls->nx + (col)
 #define l (_PI-0)
 #define x(j) (0+j*hx)
 #define y(i) (0+i*hy)
