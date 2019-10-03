@@ -2,7 +2,7 @@ CC=gcc
 CFLAGS = -lm
 OBJ= errors.o linearsystem.o utils.o getio.o main.o
 test: clean all
-	./pdeSolver -i 200 -nx 10000 -ny 10000 -o saida.txt; if ls *.o > /dev/null 2>&1; then rm *.o; fi
+	./pdeSolver -i 300 -nx 500 -ny 1000 -o out.dat; if ls *.o > /dev/null 2>&1; then rm *.o; fi
 all: $(OBJ) #compila, produz um executável chamado pdeSolver
 	$(CC) -o pdeSolver $^ $(CFLAGS)
 clean: #remove temporários e outros do makefile
