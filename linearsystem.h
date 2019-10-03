@@ -15,10 +15,10 @@
 //convergence tests
 #define EPS 1.0e-4
 //indexing
-#define AT(row, col) (row)*ls->nx + (col)
+#define AT(row, col) (row)*ls->ny + (col)
 #define l (_PI-0)
-#define x(j) (0+(j)*hx)
-#define y(i) (0+(i)*hy)
+#define x(i) (0+(i)*hx)
+#define y(j) (0+(j)*hy)
 
 typedef double real_t;
 
@@ -32,7 +32,7 @@ typedef struct {
 
 real_t f(real_t x, real_t y);
 void init_linsys(linsys_t *ls, int num_x, int num_y, int maxit, FILE *out);
-linsys_t* alloc_linsys ();
+linsys_t* alloc_linsys (int nx, int ny, int maxit);
 void free_linsys (linsys_t *ls);
 int gs_5diag(linsys_t *ls);
 

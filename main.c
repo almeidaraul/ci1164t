@@ -11,10 +11,11 @@ int main(int argc, char **argv) {
 	int nx, ny, maxit;
 	FILE *output;
 	parse_input (argc, argv, &nx, &ny, &maxit, &output);
-	linsys_t *ls = alloc_linsys();
+	linsys_t *ls = alloc_linsys(nx, ny, maxit);
 	init_linsys(ls, nx, ny, maxit, output);
 	print_error(gs_5diag(ls));
 //	printf("yay4\n");
 	output_dat(ls);
+//	free_linsys(ls); //ta dando erro
 	return 0;
 }

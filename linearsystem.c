@@ -36,8 +36,18 @@ void init_linsys (linsys_t *ls, int num_x, int num_y, int maxit, FILE *out) {
 	real_t hx, hy;
 	hx = ls->hx;
 	hy = ls->hy;
+
+	//inicializa matriz B
+	for (int i=0; i<ls->nx; i++)
+		for (int j=0; j<ls->ny; j++) {
+			ls->b[AT(i, j)] = 2*hx*hx*hy*hy*f(x(i), y(j));
+//			printf("%lf %lf %d %lf\n", x(i), y(j), AT(i, j), ls->b[AT(i, j)]);			
+		}
+//	printf("\n");
+
+
 	//inicializa matriz X
-	printf("sinh(pi²) = %lf\n", sinh(_PI*_PI));
+//	printf("sinh(pi²) = %lf\n", sinh(_PI*_PI));
 	for (int i=0; i<ls->nx; i++)
 		for (int j=0; j<ls->ny; j++) {
 			
@@ -55,21 +65,18 @@ void init_linsys (linsys_t *ls, int num_x, int num_y, int maxit, FILE *out) {
 				ls->u[AT(i, j)] = 0;
 
 //			printf("i = %d, j = %d\n", i, j);
-			printf("%lf %lf %lf\n", x(i), y(j), ls->u[AT(i, j)]);
+//			printf("%lf %lf %d %lf %lf\n", x(i), y(j), AT(i, j), ls->b[AT(i, j)], ls->u[AT(i, j)]);
 		}
-	printf("\n");	
-	for (int i=0; i<ls->nx; i++)
-		for (int j=0; j<ls->ny; j++) 
-			printf("%lf %lf %lf\n", x(i), y(j), ls->u[AT(i, j)]);
-	printf("\n");
+//	printf("\n");	
+//	for (int i=0; i<ls->nx; i++)
+//		for (int j=0; j<ls->ny; j++)
+//			printf("%lf %lf %lf\n", x(i), y(j), ls->u[AT(i, j)]);
+//	printf("\n");
 //	printf("yay\n");
 
-	//inicializa matriz B
-	for (int i=0; i<ls->nx; i++)
-		for (int j=0; j<ls->ny; j++) 
-			ls->b[AT(i, j)] = 2*hx*hx*hy*hy*f(x(i), y(j));
+
 //	printf("yay2\n");
-	printf("f(%lf, %lf) = %lf\n", x(ls->nx-1), y(1), ls->u[AT(ls->nx-1, 1)]);
+//	printf("f(%lf, %lf) = %lf\n", x(ls->nx-1), y(1), ls->u[AT(ls->nx-1, 1)]);
 
 //	for (int i=0; i<ls->nx; i++)
 //		for (int j=0; j<ls->ny; j++) 
@@ -82,11 +89,12 @@ void init_linsys (linsys_t *ls, int num_x, int num_y, int maxit, FILE *out) {
  *
  * \return ls Ponteiro para estrutura com espaço alocado
  */
-linsys_t *alloc_linsys () {
+linsys_t *alloc_linsys (int nx, int ny, int maxit) {
 	linsys_t *ls = (linsys_t *) malloc(sizeof(linsys_t));
-	ls->u = (real_t *) malloc((ls->nx)*(ls->ny)*sizeof(real_t));
-	ls->b = (real_t *) malloc((ls->nx)*(ls->ny)*sizeof(real_t));
-	ls->resid = (real_t *) malloc(ls->maxit*sizeof(real_t));
+//	printf("size = %d\n", nx*ny);
+	ls->u = (real_t *) malloc((nx)*(ny)*sizeof(real_t));
+	ls->b = (real_t *) malloc((nx)*(ny)*sizeof(real_t));
+	ls->resid = (real_t *) malloc(maxit*sizeof(real_t));
 	return ls;
 }
 
@@ -147,11 +155,11 @@ int gs_5diag(linsys_t *ls) {
 	unsigned int i, j, it;
 	double start_time, time_sum = 0.0;
 
-	for (int i=0; i<ls->nx; i++)
-		for (int j=0; j<ls->ny; j++) 
-			printf("%lf %lf %lf\n", x(i), y(j), ls->u[AT(i, j)]);
+//	for (int i=0; i<ls->nx; i++)
+//		for (int j=0; j<ls->ny; j++) 
+//			printf("%lf %lf %lf\n", x(i), y(j), ls->u[AT(i, j)]);
 
-	printf("f(%lf, %lf) = %lf\n", x(ls->nx-1), y(1), ls->u[AT(ls->nx-1, 1)]);
+//	printf("f(%lf, %lf) = %lf\n", x(ls->nx-1), y(1), ls->u[AT(ls->nx-1, 1)]);
 //	printf("prestes a entrar no loop\n");
 	for (it = 0; it < ls->maxit; it++) {
 		start_time = timestamp();
