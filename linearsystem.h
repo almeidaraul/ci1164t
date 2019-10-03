@@ -17,8 +17,8 @@
 //indexing
 #define AT(row, col) (row)*ls->nx + (col)
 #define l (_PI-0)
-#define x(j) (0+j*hx)
-#define y(i) (0+i*hy)
+#define x(j) (0+(j)*hx)
+#define y(i) (0+(i)*hy)
 
 typedef double real_t;
 

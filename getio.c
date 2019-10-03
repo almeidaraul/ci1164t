@@ -19,8 +19,11 @@
  * \param maxit Número máximo de iterações do método de Gauss-Seidel
  * \param output Arquivo onde deve ser escrita a saída
  */
-void parse_input (int argc, char **argv, int *nx, int *ny, int *maxit, FILE *output) {
-	output = stdout;
+void parse_input (int argc, char **argv, int *nx, int *ny, int *maxit, FILE **output) {
+	*output = stdout;
+	
+//	printf("File = %p\n", *output);
+
 	for (int i = 0; i < argc; i++) {
 		if (!(strcmp(argv[i], "-i"))) {
 			*maxit = atoi(argv[i+1]); 
@@ -32,9 +35,11 @@ void parse_input (int argc, char **argv, int *nx, int *ny, int *maxit, FILE *out
 			*ny = atoi(argv[i+1]);
 		}
 		else if (!(strcmp(argv[i], "-o"))) {
-			output = fopen(argv[i+1], "w");
+			*output = fopen(argv[i+1], "w");
 		}
 	}
+	
+//	printf("File = %p\n", *output);
 }
 
 /*!
@@ -49,8 +54,8 @@ void parse_input (int argc, char **argv, int *nx, int *ny, int *maxit, FILE *out
  */
 void output_dat (linsys_t *ls) {
 
-	printf("yay5\n");
-	printf("FILE = %p\n", ls->output);
+//	printf("yay5\n");
+//	printf("File = %p\n", ls->output);
 
 	real_t xit, yit;
 
@@ -68,9 +73,7 @@ void output_dat (linsys_t *ls) {
 			yit = ls->y0 + ls->hy*y;
 			fprintf(ls->output, "%lf %lf %lf\n", xit, yit, ls->u[AT(x, y)]);
 		}
-	printf("yay5.5\n");
-	fclose(ls->output);
-	printf("yay6\n");
+//	printf("yay6\n");
 }
 
 /*!

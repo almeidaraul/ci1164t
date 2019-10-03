@@ -26,40 +26,55 @@ void init_linsys (linsys_t *ls, int num_x, int num_y, int maxit, FILE *out) {
 //	ls->hx =((double)(ls->xN - ls->x0))/((double)(ls->nx-1)); //errado
 //	ls->hy = ((double)(ls->yN - ls->y0))/((double)(ls->ny-1)); //errado
 
-	ls->hx =((double)(_PI))/((double)(ls->nx-1)); //errado
-	ls->hy = ((double)(_PI))/((double)(ls->ny-1)); //errado
+	ls->hx =((double)(_PI))/((double)(ls->nx-1)); //certo
+	ls->hy = ((double)(_PI))/((double)(ls->ny-1)); //certo
 	ls->output = out;
 
+//	printf("File = %p\n", out);
 //	printf("nx = %d\nny = %d\nmaxit = %d\nhx = %lf\nhy = %lf\n", ls->nx, ls->ny, ls->maxit, ls->hx, ls->hy);
 
 	real_t hx, hy;
 	hx = ls->hx;
 	hy = ls->hy;
 	//inicializa matriz X
-	for (int i=0; i<ls->ny; i++)
-		for (int j=0; j<ls->nx; j++) {
+	printf("sinh(pi²) = %lf\n", sinh(_PI*_PI));
+	for (int i=0; i<ls->nx; i++)
+		for (int j=0; j<ls->ny; j++) {
 			
-//			printf("ny = %d, nx = %d\n", i, j);
+//			printf("nx = %d, ny = %d\n", i, j);
 
-			if ((j==0) || (j==ls->nx-1)) 
+			if ((i==0) || (i==ls->nx-1)) 
 				ls->u[AT(i, j)] = 0;
-			else if (i==0)
+			else if (j==0)
 				ls->u[AT(i, j)] = 
-					sin(2*_PI*(_PI-x(j)))*sinh(_PI*_PI);
-			else if (i==ls->ny-1)
+					sin(2*_PI*(_PI-x(i)))*sinh(_PI*_PI);
+			else if (j==ls->ny-1)
 				ls->u[AT(i, j)] = 
-					sin(2*_PI*x(j))*sinh(_PI*_PI);
+					sin(2*_PI*x(i))*sinh(_PI*_PI);
 			else
 				ls->u[AT(i, j)] = 0;
+
+//			printf("i = %d, j = %d\n", i, j);
+			printf("%lf %lf %lf\n", x(i), y(j), ls->u[AT(i, j)]);
 		}
-	
+	printf("\n");	
+	for (int i=0; i<ls->nx; i++)
+		for (int j=0; j<ls->ny; j++) 
+			printf("%lf %lf %lf\n", x(i), y(j), ls->u[AT(i, j)]);
+	printf("\n");
 //	printf("yay\n");
 
 	//inicializa matriz B
-	for (int i=0; i<ls->ny; i++)
-		for (int j=0; j<ls->nx; j++) 
-			ls->b[AT(i, j)] = 2*hx*hx*hy*hy*f(x(j), y(i));
+	for (int i=0; i<ls->nx; i++)
+		for (int j=0; j<ls->ny; j++) 
+			ls->b[AT(i, j)] = 2*hx*hx*hy*hy*f(x(i), y(j));
 //	printf("yay2\n");
+	printf("f(%lf, %lf) = %lf\n", x(ls->nx-1), y(1), ls->u[AT(ls->nx-1, 1)]);
+
+//	for (int i=0; i<ls->nx; i++)
+//		for (int j=0; j<ls->ny; j++) 
+//			printf("%lf %lf %lf\n", x(i), y(j), ls->u[AT(i, j)]);
+//	printf("\n");
 }
 
 /*!
@@ -69,8 +84,8 @@ void init_linsys (linsys_t *ls, int num_x, int num_y, int maxit, FILE *out) {
  */
 linsys_t *alloc_linsys () {
 	linsys_t *ls = (linsys_t *) malloc(sizeof(linsys_t));
-	ls->u = (real_t *) malloc((ls->nx+1)*(ls->ny+1)*sizeof(real_t));
-	ls->b = (real_t *) malloc((ls->nx+1)*(ls->ny+1)*sizeof(real_t));
+	ls->u = (real_t *) malloc((ls->nx)*(ls->ny)*sizeof(real_t));
+	ls->b = (real_t *) malloc((ls->nx)*(ls->ny)*sizeof(real_t));
 	ls->resid = (real_t *) malloc(ls->maxit*sizeof(real_t));
 	return ls;
 }
@@ -125,17 +140,23 @@ int gs_5diag(linsys_t *ls) {
 
 //	printf("entrando no gauss seidel\n");
 
+
 	real_t xi, yi, hy, hx; 
 	hy = ls->hy;
 	hx = ls->hx;
 	unsigned int i, j, it;
 	double start_time, time_sum = 0.0;
 
+	for (int i=0; i<ls->nx; i++)
+		for (int j=0; j<ls->ny; j++) 
+			printf("%lf %lf %lf\n", x(i), y(j), ls->u[AT(i, j)]);
+
+	printf("f(%lf, %lf) = %lf\n", x(ls->nx-1), y(1), ls->u[AT(ls->nx-1, 1)]);
 //	printf("prestes a entrar no loop\n");
 	for (it = 0; it < ls->maxit; it++) {
 		start_time = timestamp();
-		for(i = 1; i < ls->nx-1; i++)				//talvez nx-1? (borda direita)
-			for(j = 1; j < ls->ny-1; j++) {			//idem
+		for(i = 1; i < ((ls->nx)-1); i++)				//talvez nx-1? (borda direita)
+			for(j = 1; j < ((ls->ny)-1); j++) {			//idem
 
 //				printf("it = %d, nx = %d, ny = %d\n", it, i, j);
 //				double a1, a2, a3, a4, a5;
