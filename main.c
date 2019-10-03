@@ -16,6 +16,6 @@ int main(int argc, char **argv) {
 	print_error(gs_5diag(ls));
 //	printf("yay4\n");
 	output_dat(ls);
-//	free_linsys(ls); //ta dando erro
+	free_linsys(ls); //ta dando erro
 	return 0;
 }
