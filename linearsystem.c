@@ -36,18 +36,13 @@ void init_linsys (linsys_t *ls, int num_x, int num_y, int maxit, FILE *out) {
 	for (int i=0; i<ls->nx; i++)
 		for (int j=0; j<ls->ny; j++) {
 			ls->b[AT(i, j)] = 2*hx*hx*hy*hy*f(x(i), y(j));
-//			printf("%lf %lf %d %lf\n", x(i), y(j), AT(i, j), ls->b[AT(i, j)]);			
 		}
-//	printf("\n");
 
 
 	//inicializa matriz X
-//	printf("sinh(pi²) = %lf\n", sinh(_PI*_PI));
 	for (int i=0; i<ls->nx; i++)
 		for (int j=0; j<ls->ny; j++) {
 			
-//			printf("nx = %d, ny = %d\n", i, j);
-
 			if ((i==0) || (i==ls->nx-1)) 
 				ls->u[AT(i, j)] = 0;
 			else if (j==0)
@@ -59,24 +54,7 @@ void init_linsys (linsys_t *ls, int num_x, int num_y, int maxit, FILE *out) {
 			else
 				ls->u[AT(i, j)] = 0;
 
-//			printf("i = %d, j = %d\n", i, j);
-//			printf("%lf %lf %d %lf %lf\n", x(i), y(j), AT(i, j), ls->b[AT(i, j)], ls->u[AT(i, j)]);
 		}
-//	printf("\n");	
-//	for (int i=0; i<ls->nx; i++)
-//		for (int j=0; j<ls->ny; j++)
-//			printf("%lf %lf %lf\n", x(i), y(j), ls->u[AT(i, j)]);
-//	printf("\n");
-//	printf("yay\n");
-
-
-//	printf("yay2\n");
-//	printf("f(%lf, %lf) = %lf\n", x(ls->nx-1), y(1), ls->u[AT(ls->nx-1, 1)]);
-
-//	for (int i=0; i<ls->nx; i++)
-//		for (int j=0; j<ls->ny; j++) 
-//			printf("%lf %lf %lf\n", x(i), y(j), ls->u[AT(i, j)]);
-//	printf("\n");
 }
 
 /*!
@@ -86,7 +64,6 @@ void init_linsys (linsys_t *ls, int num_x, int num_y, int maxit, FILE *out) {
  */
 linsys_t *alloc_linsys (int nx, int ny, int maxit) {
 	linsys_t *ls = (linsys_t *) malloc(sizeof(linsys_t));
-//	printf("size = %d\n", nx*ny);
 	ls->u = (real_t *) malloc((nx)*(ny)*sizeof(real_t));
 	ls->b = (real_t *) malloc((nx)*(ny)*sizeof(real_t));
 	ls->resid = (real_t *) malloc(maxit*sizeof(real_t));
@@ -118,8 +95,8 @@ real_t residuo (linsys_t *ls) {
 	hx = ls->hx;
 	hy = ls->hy;
 
-	for(int i = 1; i < ls->nx-1; i++)				//talvez nx-1? (borda direita)
-		for(int j = 1; j < ls->ny-1; j++) {			//idem
+	for(int i = 1; i < ls->nx-1; i++)
+		for(int j = 1; j < ls->ny-1; j++) { 
 			aux = ls->b[AT(i, j)] 
 					+ ls->u[AT(i+1, j)]*(2*hy*hy-hx*hy*hy)
 					+ ls->u[AT(i-1, j)]*(2*hy*hy+hx*hy*hy)
@@ -141,51 +118,20 @@ real_t residuo (linsys_t *ls) {
  */
 int gs_5diag(linsys_t *ls) {
 
-//	printf("entrando no gauss seidel\n");
-
-
 	real_t xi, yi, hy, hx; 
 	hy = ls->hy;
 	hx = ls->hx;
 	unsigned int i, j, it;
 	double start_time, time_sum = 0.0;
 
-//	for (int i=0; i<ls->nx; i++)
-//		for (int j=0; j<ls->ny; j++) 
-//			printf("%lf %lf %lf\n", x(i), y(j), ls->u[AT(i, j)]);
-
-//	printf("f(%lf, %lf) = %lf\n", x(ls->nx-1), y(1), ls->u[AT(ls->nx-1, 1)]);
-//	printf("prestes a entrar no loop\n");
 	for (it = 0; it < ls->maxit; it++) {
 		start_time = timestamp();
-		for(i = 1; i < ((ls->nx)-1); i++)				//talvez nx-1? (borda direita)
-			for(j = 1; j < ((ls->ny)-1); j++) {			//idem
-
-//				printf("it = %d, nx = %d, ny = %d\n", it, i, j);
-//				double a1, a2, a3, a4, a5;
-
-//					printf("%d*%d+%d = AT[a1] = %d\n", i, ls->nx, j, AT(i, j));
-//					a1 = ls->b[AT(i, j)]; 
-//					printf("a1 = %lf\n", a1);
-//
-//					printf("%d*%d+%d = AT[a2] = %d\n", i+1, ls->nx, j, AT(i+1, j));
-//					a2 = ls->u[AT(i+1, j)]*(2*hy*hy-hx*hy*hy);
-//					printf("a2 = %lf\n", a2);
-//
-//					printf("%d*%d+%d = AT[a3] = %d\n", i-1, ls->nx, j, AT(i-1, j));
-//					a3 = ls->u[AT(i-1, j)]*(2*hy*hy+hx*hy*hy);
-//					printf("a3 = %lf\n", a3);
-//
-//					a4 = ls->u[AT(i, j+1)]*(2*hx*hx-hx*hx*hy);
-//					printf("a4 = %lf\n", a4);
-//
-//					a5 = ls->u[AT(i, j-1)]*(2*hx*hx+hx*hx*hy);
-//					printf("a5 = %lf\n\n", a5);
-
+		for(i = 1; i < ((ls->nx)-1); i++)
+			for(j = 1; j < ((ls->ny)-1); j++) {
 
 				xi = ls->x0 + i*ls->hx;
 				yi = ls->y0 + j*ls->hy;
-				ls->u[AT(i, j)] = //the N word
+				ls->u[AT(i, j)] = 
 					(ls->b[AT(i, j)] 
 					 + ls->u[AT(i+1, j)]*(2*hy*hy-hx*hy*hy)
 					 + ls->u[AT(i-1, j)]*(2*hy*hy+hx*hy*hy)
@@ -200,7 +146,6 @@ int gs_5diag(linsys_t *ls) {
 		ls->resid[it] = residuo(ls);
 	}
 	ls->avg_time = time_sum/ls->maxit;
-//	printf("yaay3\n");
 	return 0;
 }
 

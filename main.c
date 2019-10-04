@@ -14,8 +14,7 @@ int main(int argc, char **argv) {
 	linsys_t *ls = alloc_linsys(nx, ny, maxit);
 	init_linsys(ls, nx, ny, maxit, output);
 	print_error(gs_5diag(ls));
-//	printf("yay4\n");
 	output_dat(ls);
-	free_linsys(ls); //ta dando erro
+	free_linsys(ls); 
 	return 0;
 }

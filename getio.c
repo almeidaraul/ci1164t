@@ -21,8 +21,6 @@
  */
 void parse_input (int argc, char **argv, int *nx, int *ny, int *maxit, FILE **output) {
 	*output = stdout;
-	
-//	printf("File = %p\n", *output);
 
 	for (int i = 0; i < argc; i++) {
 		if (!(strcmp(argv[i], "-i"))) {
@@ -39,7 +37,7 @@ void parse_input (int argc, char **argv, int *nx, int *ny, int *maxit, FILE **ou
 		}
 	}
 	
-//	printf("File = %p\n", *output);
+
 }
 
 /*!
@@ -54,8 +52,6 @@ void parse_input (int argc, char **argv, int *nx, int *ny, int *maxit, FILE **ou
  */
 void output_dat (linsys_t *ls) {
 
-//	printf("yay5\n");
-//	printf("File = %p\n", ls->output);
 
 	real_t xit, yit;
 
@@ -73,7 +69,6 @@ void output_dat (linsys_t *ls) {
 			yit = ls->y0 + ls->hy*y;
 			fprintf(ls->output, "%lf %lf %lf\n", xit, yit, ls->u[AT(x, y)]);
 		}
-//	printf("yay6\n");
 }
 
 /*!
