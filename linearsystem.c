@@ -1,13 +1,13 @@
-/*!
+/*!'
  * \file linearsystem.c *
  * Funções que tratam diretamente do sistema linear
  */
 #include "linearsystem.h"
 
 /*!
- * \brief FALTANDO
+ * \brief Retorna o valor da função f(x, y), apenas para facilitar implementação e leitura
  *
- * \param 
+ * \param xi e yi atuais
  */
 real_t f(real_t x, real_t y) {
 	return (4*_PI*_PI*(sin(2*_PI*x)*sinh(_PI*y) + 
@@ -15,23 +15,18 @@ real_t f(real_t x, real_t y) {
 }
 
 /*!
- * \brief FALTANDO
+ * \brief Inicializa o sistema linear, isto é, atribui a ele os valores corretos para nx, ny, hx, hy, maxit, output e inicializa o vetor solução com o valor de contorno nas bordas e 0 no resto, e o vetor b
  *
- * \param
+ * \param Ponteiro para o sistema linear, número de pontos em x e em y, número de iterações e arquivo de saída
  */
 void init_linsys (linsys_t *ls, int num_x, int num_y, int maxit, FILE *out) {
 	ls->maxit = maxit;
 	ls->nx = num_x;
 	ls->ny = num_y;
-//	ls->hx =((double)(ls->xN - ls->x0))/((double)(ls->nx-1)); //errado
-//	ls->hy = ((double)(ls->yN - ls->y0))/((double)(ls->ny-1)); //errado
-
 	ls->hx =((double)(_PI))/((double)(ls->nx-1)); //certo
 	ls->hy = ((double)(_PI))/((double)(ls->ny-1)); //certo
 	ls->output = out;
 
-//	printf("File = %p\n", out);
-//	printf("nx = %d\nny = %d\nmaxit = %d\nhx = %lf\nhy = %lf\n", ls->nx, ls->ny, ls->maxit, ls->hx, ls->hy);
 
 	real_t hx, hy;
 	hx = ls->hx;
@@ -112,10 +107,10 @@ void free_linsys (linsys_t *ls) {
 
 
 /*!
- * \brief FALTANDO
+ * \brief Calcula o resíduo do sistema linear
  *
- * \param
- * \return
+ * \param Ponteiro para o sistem linear
+ * \return Residuo para a iteração atual
  */
 real_t residuo (linsys_t *ls) {
 
