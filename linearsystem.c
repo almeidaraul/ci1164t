@@ -21,8 +21,8 @@ real_t f(real_t x, real_t y) {
  */
 void init_linsys (linsys_t *ls, int num_x, int num_y, int maxit, FILE *out) {
 	ls->maxit = maxit;
-	ls->nx = num_x;
-	ls->ny = num_y;
+	ls->nx = num_x+2;
+	ls->ny = num_y+2;
 	ls->hx =((double)(_PI))/((double)(ls->nx-1)); //certo
 	ls->hy = ((double)(_PI))/((double)(ls->ny-1)); //certo
 	ls->output = out;
