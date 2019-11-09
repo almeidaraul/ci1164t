@@ -21,8 +21,8 @@ real_t f(real_t x, real_t y) {
  */
 void init_linsys (linsys_t *ls, int num_x, int num_y, int maxit, FILE *out) {
 	ls->maxit = maxit;
-	ls->nx = num_x+2;
-	ls->ny = num_y+2;
+	ls->nx = num_x;
+	ls->ny = num_y;
 	ls->hx =((double)(_PI))/((double)(ls->nx-1)); //certo
 	ls->hy = ((double)(_PI))/((double)(ls->ny-1)); //certo
 	ls->output = out;
@@ -128,7 +128,6 @@ int gs_5diag(linsys_t *ls) {
 		start_time = timestamp();
 		for(i = 1; i < ((ls->nx)-1); i++)
 			for(j = 1; j < ((ls->ny)-1); j++) {
-
 				xi = ls->x0 + i*ls->hx;
 				yi = ls->y0 + j*ls->hy;
 				ls->u[AT(i, j)] = 

@@ -27,10 +27,10 @@ void parse_input (int argc, char **argv, int *nx, int *ny, int *maxit, FILE **ou
 			*maxit = atoi(argv[i+1]); 
 		}
 		else if (!(strcmp(argv[i], "-nx"))) {
-			*nx = atoi(argv[i+1]);
+			*nx = atoi(argv[i+1])+2;
 		}
 		else if (!(strcmp(argv[i], "-ny"))) {
-			*ny = atoi(argv[i+1]);
+			*ny = atoi(argv[i+1])+2;
 		}
 		else if (!(strcmp(argv[i], "-o"))) {
 			*output = fopen(argv[i+1], "w");
