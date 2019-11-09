@@ -66,7 +66,7 @@ linsys_t *alloc_linsys (int nx, int ny, int maxit) {
 	linsys_t *ls = (linsys_t *) malloc(sizeof(linsys_t));
 	ls->u = (real_t *) malloc((nx)*(ny)*sizeof(real_t));
 	ls->b = (real_t *) malloc((nx)*(ny)*sizeof(real_t));
-	ls->resid = (real_t *) malloc(maxit*sizeof(real_t));
+	ls->resid = (real_t *) malloc((maxit+1)*sizeof(real_t));
 	return ls;
 }
 
@@ -118,33 +118,61 @@ real_t residuo (linsys_t *ls) {
  */
 int gs_5diag(linsys_t *ls) {
 
-	real_t xi, yi, hy, hx; 
+	real_t xi, yi, hy, hx, aux, aux2, r, *antigo; 
 	hy = ls->hy;
 	hx = ls->hx;
 	unsigned int i, j, it;
 	double start_time, time_sum = 0.0;
 
+    antigo = malloc((ls->ny)*sizeof(double));
+
+
+
 	for (it = 0; it < ls->maxit; it++) {
 		start_time = timestamp();
-		for(i = 1; i < ((ls->nx)-1); i++)
+        r=0;
+        for (int i=0; i<ls->ny; i++)
+            antigo[i] = ls->u[AT(0, i)];
+
+		for(i = 1; i < ((ls->nx)-1); i++) {
+            antigo[0] = ls->u[AT(i, 0)];
 			for(j = 1; j < ((ls->ny)-1); j++) {
+
 				xi = ls->x0 + i*ls->hx;
 				yi = ls->y0 + j*ls->hy;
-				ls->u[AT(i, j)] = 
-					(ls->b[AT(i, j)] 
-					 + ls->u[AT(i+1, j)]*(2*hy*hy-hx*hy*hy)
-					 + ls->u[AT(i-1, j)]*(2*hy*hy+hx*hy*hy)
-					 + ls->u[AT(i, j+1)]*(2*hx*hx-hx*hx*hy)
-					 + ls->u[AT(i, j-1)]*(2*hx*hx+hx*hx*hy))
-					 /(4*hy*hy
-							 +4*hx*hx
-							 +8*PI_SQUARED*hx*hx*hy*hy
-					  );
-			}
 
-		ls->resid[it] = residuo(ls);
+                //calcula o fator comum ao residuo da iteracao anterior e do
+                //gauss seidel atual
+				aux = (ls->b[AT(i, j)]
+					 + ls->u[AT(i+1, j)]*(2*hy*hy-hx*hy*hy)
+                     + ls->u[AT(i, j+1)]*(2*hx*hx-hx*hx*hy));
+
+
+                //calcula o residuo da it anterior
+				aux2 = aux
+                     + antigo[j]*(2*hy*hy+hx*hy*hy)
+					 + antigo[j-1]*(2*hx*hx+hx*hx*hy)
+                     - ls->u[AT(i, j)]*(4*hy*hy + 4*hx*hx + 8*PI_SQUARED*hx*hx*hy*hy);
+                
+                r+= aux2*aux2;
+
+                antigo[j] = ls->u[AT(i, j)];
+
+                //calcula pelo gauss seidel
+				ls->u[AT(i, j)] = (aux
+					 + ls->u[AT(i-1, j)]*(2*hy*hy+hx*hy*hy)
+					 + ls->u[AT(i, j-1)]*(2*hx*hx+hx*hx*hy)
+                           )/(4*hy*hy
+							 +4*hx*hx
+							 +8*PI_SQUARED*hx*hx*hy*hy);
+			}
+        }
+		ls->resid[it] = sqrt(r);
 		time_sum += timestamp() - start_time;
+
 	}
+    //calcula o residuo da ultima iteracao
+    ls->resid[ls->maxit] = residuo(ls);
 	ls->avg_time = time_sum/ls->maxit;
 	return 0;
 }
