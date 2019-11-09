@@ -59,8 +59,8 @@ void output_dat (linsys_t *ls) {
 	fprintf(ls->output, "# Tempo Médio GS: %lf\n", ls->avg_time);
 	fprintf(ls->output, "#\n# Norma L2 do Resíduo\n");
 
-	for (int it=0; it < ls->maxit; it++)
-		fprintf(ls->output, "# i=%d: %lf\n", it+1, ls->resid[it]);
+	for (int it=1; it <= ls->maxit; it++)
+		fprintf(ls->output, "# i=%d: %lf\n", it, ls->resid[it]);
 
 	fprintf(ls->output, "###########\n");
 	for (int x = 0; x < ls->nx; x++)

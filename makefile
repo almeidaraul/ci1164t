@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS = -lm
+CFLAGS = -O3 -lm
 OBJ= errors.o linearsystem.o utils.o getio.o main.o
 all: $(OBJ) #compila, produz um executável chamado pdeSolver
 	$(CC) -o pdeSolver $^ $(CFLAGS)
