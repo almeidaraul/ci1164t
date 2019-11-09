@@ -141,8 +141,9 @@ int gs_5diag(linsys_t *ls) {
 							 +8*PI_SQUARED*hx*hx*hy*hy
 					  );
 			}
-		time_sum += timestamp() - start_time;
+
 		ls->resid[it] = residuo(ls);
+		time_sum += timestamp() - start_time;
 	}
 	ls->avg_time = time_sum/ls->maxit;
 	return 0;
