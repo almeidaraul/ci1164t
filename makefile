@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS = -lm
+CFLAGS = -lm -DLIKWID_PERFMON -llikwid -l/home/soft/likwid/include
 OBJ= errors.o linearsystem.o utils.o getio.o main.o
 all: $(OBJ) #compila, produz um executável chamado pdeSolver
 	$(CC) -o pdeSolver $^ $(CFLAGS)

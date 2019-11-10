@@ -1,0 +1,5 @@
+#!/bin/bash
+vim commitmsg
+./profile >> commitmsg
+git commit -F commitmsg
+rm commitmsg
