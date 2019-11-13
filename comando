@@ -1,0 +1,1 @@
+likwid-perfctr -C 3 -g L2CACHE -m ./pdeSolver -i 300 -nx 100 -ny 200 -o out.dat

@@ -118,6 +118,7 @@ real_t residuo (linsys_t *ls) {
  */
 int gs_5diag(linsys_t *ls) {
 
+    LIKWID_MARKER_INIT;
 	real_t xi, yi, hy, hx, aux, aux2, r, *antigo; 
 	hy = ls->hy;
 	hx = ls->hx;
@@ -127,8 +128,8 @@ int gs_5diag(linsys_t *ls) {
     antigo = malloc((ls->ny)*sizeof(double));
 
 
-
 	for (it = 0; it < ls->maxit; it++) {
+        LIKWID_MARKER_START("GSEIDEL");
 		start_time = timestamp();
         r=0;
         for (int i=0; i<ls->ny; i++)
@@ -169,11 +170,12 @@ int gs_5diag(linsys_t *ls) {
         }
 		ls->resid[it] = sqrt(r);
 		time_sum += timestamp() - start_time;
-
+        LIKWID_MARKER_STOP("GSEIDEL");
 	}
     //calcula o residuo da ultima iteracao
     ls->resid[ls->maxit] = residuo(ls);
 	ls->avg_time = time_sum/ls->maxit;
+    LIKWID_MARKER_CLOSE;
 	return 0;
 }
 

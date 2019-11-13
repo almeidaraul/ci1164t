@@ -1,0 +1,39 @@
+--------------------------------------------------------------------------------
+CPU name:	Intel(R) Core(TM) i5-7500 CPU @ 3.40GHz
+CPU type:	Intel Coffeelake processor
+CPU clock:	3.41 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Region GSEIDEL, Group 1: L3
++-------------------+----------+
+|    Region Info    |  Core 3  |
++-------------------+----------+
+| RDTSC Runtime [s] | 0.004459 |
+|     call count    |       10 |
++-------------------+----------+
+
++-----------------------+---------+----------+
+|         Event         | Counter |  Core 3  |
++-----------------------+---------+----------+
+|   INSTR_RETIRED_ANY   |  FIXC0  | 41214900 |
+| CPU_CLK_UNHALTED_CORE |  FIXC1  | 16664900 |
+|  CPU_CLK_UNHALTED_REF |  FIXC2  | 14987390 |
+|    L2_LINES_IN_ALL    |   PMC0  |    46534 |
+|     L2_TRANS_L2_WB    |   PMC1  |    12167 |
++-----------------------+---------+----------+
+
++-------------------------------+-----------+
+|             Metric            |   Core 3  |
++-------------------------------+-----------+
+|      Runtime (RDTSC) [s]      |    0.0045 |
+|      Runtime unhalted [s]     |    0.0049 |
+|          Clock [MHz]          | 3789.4616 |
+|              CPI              |    0.4043 |
+|  L3 load bandwidth [MBytes/s] |  667.8730 |
+|  L3 load data volume [GBytes] |    0.0030 |
+| L3 evict bandwidth [MBytes/s] |  174.6252 |
+| L3 evict data volume [GBytes] |    0.0008 |
+|    L3 bandwidth [MBytes/s]    |  842.4983 |
+|    L3 data volume [GBytes]    |    0.0038 |
++-------------------------------+-----------+
+

@@ -67,7 +67,7 @@ void output_dat (linsys_t *ls) {
 		for (int y = 0; y < ls->ny; y++) {
 			xit = ls->x0 + ls->hx*x;
 			yit = ls->y0 + ls->hy*y;
-			fprintf(ls->output, "%lf %lf %lf\n", xit, yit, ls->u[AT(x, y)]);
+			//fprintf(ls->output, "%lf %lf %lf\n", xit, yit, ls->u[AT(x, y)]);
 		}
 }
 
