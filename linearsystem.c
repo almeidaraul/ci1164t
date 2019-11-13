@@ -118,24 +118,79 @@ real_t residuo (linsys_t *ls) {
  */
 int gs_5diag(linsys_t *ls) {
 
-	real_t xi, yi, hy, hx, aux, aux2, r, *antigo; 
+	real_t xi, yi, hy, hx, aux, aux2, r, *antigo, *antigo2; 
 	hy = ls->hy;
 	hx = ls->hx;
 	unsigned int i, j, it;
 	double start_time, time_sum = 0.0;
 
     antigo = malloc((ls->ny)*sizeof(double));
-
-
+    antigo2 = malloc((ls->ny)*sizeof(double));
 
 	for (it = 0; it < ls->maxit; it++) {
 		start_time = timestamp();
         r=0;
-        for (int i=0; i<ls->ny; i++)
-            antigo[i] = ls->u[AT(0, i)];
 
-		for(i = 1; i < ((ls->nx)-1); i++) {
+		for(i = 1; i < ((ls->nx)-1-(ls->nx % 2)); i+=2) {
+
+            for(j = 1; j < ls->ny; j++) {
+                antigo[j] = ls->u[AT(i-1, j)];
+                antigo2[j] = ls->u[AT(i, j)];
+                }
             antigo[0] = ls->u[AT(i, 0)];
+            antigo2[0] = ls->u[AT(i+1, 0)];
+			for(j = 1; j < ((ls->ny)-1); j++) {
+
+                //calcula o fator comum ao residuo da iteracao anterior e do
+                //gauss seidel atual
+				aux = (ls->b[AT(i, j)]
+					 + ls->u[AT(i+1, j)]*(2*hy*hy-hx*hy*hy)
+                     + ls->u[AT(i, j+1)]*(2*hx*hx-hx*hx*hy));
+
+                //calcula o residuo da it anterior
+				aux2 = aux
+                     + antigo[j]*(2*hy*hy+hx*hy*hy)
+					 + antigo[j-1]*(2*hx*hx+hx*hx*hy)
+                     - ls->u[AT(i, j)]*(4*hy*hy + 4*hx*hx + 8*PI_SQUARED*hx*hx*hy*hy);
+
+                r+= aux2*aux2;
+
+                antigo[j] = ls->u[AT(i, j)];
+
+                //calcula pelo gauss seidel
+				ls->u[AT(i, j)] = (aux
+					 + ls->u[AT(i-1, j)]*(2*hy*hy+hx*hy*hy)
+					 + ls->u[AT(i, j-1)]*(2*hx*hx+hx*hx*hy)
+                           )/(4*hy*hy
+							 +4*hx*hx
+                             +8*PI_SQUARED*hx*hx*hy*hy);
+
+                //desenrolando laço (i.e. tudo acima soh q de novo)
+
+
+				aux = (ls->b[AT(i+1, j)]
+					 + ls->u[AT(i+2, j)]*(2*hy*hy-hx*hy*hy)
+                     + ls->u[AT(i+1, j+1)]*(2*hx*hx-hx*hx*hy));
+
+				aux2 = aux
+                     + antigo2[j]*(2*hy*hy+hx*hy*hy)
+					 + antigo2[j-1]*(2*hx*hx+hx*hx*hy)
+                     - ls->u[AT(i+1, j)]*(4*hy*hy + 4*hx*hx + 8*PI_SQUARED*hx*hx*hy*hy);
+                
+                r+= aux2*aux2;
+
+                antigo2[j] = ls->u[AT(i+1, j)];
+
+				ls->u[AT(i+1, j)] = (aux
+					 + ls->u[AT(i, j)]*(2*hy*hy+hx*hy*hy)
+					 + ls->u[AT(i+1, j-1)]*(2*hx*hx+hx*hx*hy)
+                           )/(4*hy*hy
+							 +4*hx*hx
+							 +8*PI_SQUARED*hx*hx*hy*hy);
+			}
+        }
+		for(i = ((ls->nx)-1-(ls->nx % 2)); i < ((ls->nx)-1); i++) {
+            antigo[AT(1, 0)] = ls->u[AT(i, 0)];            
 			for(j = 1; j < ((ls->ny)-1); j++) {
 
 				xi = ls->x0 + i*ls->hx;
@@ -150,13 +205,13 @@ int gs_5diag(linsys_t *ls) {
 
                 //calcula o residuo da it anterior
 				aux2 = aux
-                     + antigo[j]*(2*hy*hy+hx*hy*hy)
-					 + antigo[j-1]*(2*hx*hx+hx*hx*hy)
+                     + antigo2[j]*(2*hy*hy+hx*hy*hy)
+					 + antigo2[j-1]*(2*hx*hx+hx*hx*hy)
                      - ls->u[AT(i, j)]*(4*hy*hy + 4*hx*hx + 8*PI_SQUARED*hx*hx*hy*hy);
                 
                 r+= aux2*aux2;
 
-                antigo[j] = ls->u[AT(i, j)];
+                antigo2[j] = ls->u[AT(i, j)];
 
                 //calcula pelo gauss seidel
 				ls->u[AT(i, j)] = (aux
@@ -164,8 +219,8 @@ int gs_5diag(linsys_t *ls) {
 					 + ls->u[AT(i, j-1)]*(2*hx*hx+hx*hx*hy)
                            )/(4*hy*hy
 							 +4*hx*hx
-							 +8*PI_SQUARED*hx*hx*hy*hy);
-			}
+                             +8*PI_SQUARED*hx*hx*hy*hy);
+            }
         }
 		ls->resid[it] = sqrt(r);
 		time_sum += timestamp() - start_time;
