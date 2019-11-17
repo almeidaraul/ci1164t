@@ -55,7 +55,7 @@ void output_dat (linsys_t *ls) {
 
 	real_t xit, yit;
 
-	fprintf(ls->output, "###########\n");
+	/*fprintf(ls->output, "###########\n");
 	fprintf(ls->output, "# Tempo Médio GS: %lf\n", ls->avg_time);
 	fprintf(ls->output, "#\n# Norma L2 do Resíduo\n");
 
@@ -69,6 +69,7 @@ void output_dat (linsys_t *ls) {
 			yit = ls->y0 + ls->hy*y;
 			fprintf(ls->output, "%lf %lf %lf\n", xit, yit, ls->u[AT(x, y)]);
 		}
+        */
 }
 
 /*!
