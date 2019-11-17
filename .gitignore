@@ -4,5 +4,5 @@
 doxygen_docs/*
 lwresultstable
 table
-likwid_outputs/old/*
+likwid_outputs/
 pdeSolver
