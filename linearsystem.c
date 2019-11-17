@@ -123,8 +123,10 @@ int gs_5diag(linsys_t *ls) {
 	hx = ls->hx;
 	unsigned int i, j, it;
 	double start_time, time_sum = 0.0;
+    LIKWID_MARKER_INIT;
 
 	for (it = 0; it < ls->maxit; it++) {
+        LIKWID_MARKER_START("GSEIDEL");
 		start_time = timestamp();
 		for(i = 1; i < ((ls->nx)-1); i++)
 			for(j = 1; j < ((ls->ny)-1); j++) {
@@ -144,7 +146,9 @@ int gs_5diag(linsys_t *ls) {
 
 		ls->resid[it] = residuo(ls);
 		time_sum += timestamp() - start_time;
+        LIKWID_MARKER_STOP("GSEIDEL");
 	}
+    LIKWID_MARKER_CLOSE;
 	ls->avg_time = time_sum/ls->maxit;
 	return 0;
 }

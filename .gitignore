@@ -2,3 +2,7 @@
 *.swp
 *.dat
 doxygen_docs/*
+lwresultstable
+table
+likwid_outputs/old/*
+pdeSolver

@@ -1,5 +1,5 @@
 #!/bin/bash
-NSIZES=( 32 ) #50 64 100 128 200 256 300 400 512 1000 1024 2000 2048 3000 4000 4096 5000 10000 )
+NSIZES=( 32 50 64 100 128 200 256 300 400 512 1000 1024 2000 2048 3000 4000 4096 5000 10000 )
 ITERS=10 #objetivo: printar cada coisa ordenada pelo tamanho
 
 #LINHAS: tempo médio, memory bandwith, data cache miss ratio, flops_dp, flops_avx

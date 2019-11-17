@@ -12,6 +12,19 @@
 #define _PI 3.14159265358979323846
 #define PI_SQUARED 9.869604401089358
 #define SINH_PS 9666.84451132098 //sinh(PI_SQUARED)
+//likwid
+#ifdef LIKWID_PERFMON
+#include <likwid.h>
+#else
+#define LIKWID_MARKER_INIT
+#define LIKWID_MARKER_THREADINIT
+#define LIKWID_MARKER_SWITCH
+#define LIKWID_MARKER_REGISTER(regionTag)
+#define LIKWID_MARKER_START(regionTag)
+#define LIKWID_MARKER_STOP(regionTag)
+#define LIKWID_MARKER_CLOSE
+#define LIKWID_MARKER_GET(regionTag, nevents, events, time, count)
+#endif
 //convergence tests
 #define EPS 1.0e-4
 //indexing
