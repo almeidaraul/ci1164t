@@ -26,7 +26,6 @@ echo "# Nsize Avgtime Memband Missrate FDP AVX" > table
 S='_'
 SOLVER="-m ./pdeSolver -i $ITERS"
 
-echo "" > lwresultstable
 #variáveis de medição
 AVGTIME='RDTSC Runtime'
 MEMBAND='L3 bandwidth'
@@ -68,5 +67,7 @@ do
 
 
     echo $N $AVGTIME_R $MEMBAND_R $MISS_R $FDP_R $AVX_R >> table
+    rm $LWOUT/new/*
+    ./devclean.sh
 
 done
